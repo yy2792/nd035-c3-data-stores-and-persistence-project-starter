@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.udacity.jdnd.course3.critter.Entity.Customer;
 import com.udacity.jdnd.course3.critter.Entity.Pet;
+import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import javassist.bytecode.StackMapTable;
@@ -28,8 +29,8 @@ public class PetService {
         this.customerRepository = customerRepository;
     }
 
-    public Pet save(Pet pet) {
-        petRepository.save(pet);
+    public Pet savePet(Pet pet) {
+        pet = petRepository.save(pet);
         return pet;
     }
 
@@ -43,11 +44,12 @@ public class PetService {
     public Pet convertPetDTOToEntity(PetDTO petDTO) throws CustomerNotFoundError {
         Pet pet = new Pet();
         BeanUtils.copyProperties(petDTO, pet);
-        pet.setCustomer(customerRepository.findById(petDTO.getOwnerId()).
-                orElseThrow(() -> new CustomerNotFoundError(
-                        "Owner" + String.valueOf(petDTO.getOwnerId()) + "not found!")));
+        if (petDTO.getOwnerId() != 0) {
+            pet.setCustomer(customerRepository.findById(petDTO.getOwnerId()).
+                    orElseThrow(() -> new CustomerNotFoundError(
+                            "Owner" + String.valueOf(petDTO.getOwnerId()) + "not found!")));
+        }
         return pet;
     }
-
 }
 
