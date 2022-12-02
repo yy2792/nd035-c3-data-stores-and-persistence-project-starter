@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.model;
 
+import com.udacity.jdnd.course3.critter.pet.PetType;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
 
