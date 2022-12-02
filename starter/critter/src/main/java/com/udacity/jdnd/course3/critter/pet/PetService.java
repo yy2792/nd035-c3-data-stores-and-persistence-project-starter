@@ -1,0 +1,53 @@
+package com.udacity.jdnd.course3.critter.pet;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.udacity.jdnd.course3.critter.Entity.Customer;
+import com.udacity.jdnd.course3.critter.Entity.Pet;
+import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
+import com.udacity.jdnd.course3.critter.repository.PetRepository;
+import javassist.bytecode.StackMapTable;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
+
+@Service
+@Transactional
+public class PetService {
+    @Autowired
+    private final PetRepository petRepository;
+    @Autowired
+    private final CustomerRepository customerRepository;
+
+    public PetService(PetRepository repository, CustomerRepository customerRepository) {
+        this.petRepository = repository;
+        this.customerRepository = customerRepository;
+    }
+
+    public Pet save(Pet pet) {
+        petRepository.save(pet);
+        return pet;
+    }
+
+    public PetDTO convertEntityToPetDTO(Pet pet) {
+        PetDTO petDTO = new PetDTO();
+        BeanUtils.copyProperties(pet, petDTO);
+        petDTO.setOwnerId(pet.getCustomer().getId());
+        return petDTO;
+    }
+
+    public Pet convertPetDTOToEntity(PetDTO petDTO) throws CustomerNotFoundError {
+        Pet pet = new Pet();
+        BeanUtils.copyProperties(petDTO, pet);
+        pet.setCustomer(customerRepository.findById(petDTO.getOwnerId()).
+                orElseThrow(() -> new CustomerNotFoundError(
+                        "Owner" + String.valueOf(petDTO.getOwnerId()) + "not found!")));
+        return pet;
+    }
+
+}
+
