@@ -31,7 +31,7 @@ public class CustomerService {
         return customer;
     }
 
-    private CustomerDTO convertEntityToCustomerDTO(Customer customer) {
+    public CustomerDTO convertEntityToCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
         if(customer.getPets() != null){
@@ -42,7 +42,7 @@ public class CustomerService {
         return customerDTO;
     }
 
-    private Customer convertCustomerDTOToEntity(CustomerDTO customerDTO) throws PetNotFoundError{
+    public Customer convertCustomerDTOToEntity(CustomerDTO customerDTO) throws PetNotFoundError{
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
         if(customerDTO.getPetIds() != null){
