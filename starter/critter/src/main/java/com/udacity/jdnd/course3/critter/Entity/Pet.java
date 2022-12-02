@@ -6,6 +6,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Data
@@ -24,4 +25,6 @@ public class Pet {
     private String notes;
     @ManyToOne(targetEntity = Customer.class, optional = false, fetch = FetchType.LAZY)
     private Customer customer;
+    @ManyToMany(mappedBy="petList")
+    private Set<Schedule> petSchedules;
 }
