@@ -6,7 +6,6 @@ import com.udacity.jdnd.course3.critter.Entity.Pet;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
-import javassist.bytecode.StackMapTable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
