@@ -16,7 +16,7 @@ public class Customer {
     private String name;
     @Nationalized
     private String notes;
-    @OneToMany(targetEntity = Pet.class, mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Pet.class, mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pet> pets;
 
     public void addPet(Pet pet){
