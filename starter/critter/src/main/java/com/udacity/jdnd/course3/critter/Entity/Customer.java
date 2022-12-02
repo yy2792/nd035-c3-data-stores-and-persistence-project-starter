@@ -18,4 +18,8 @@ public class Customer {
     private String notes;
     @OneToMany(targetEntity = Pet.class, mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pet> pets;
+
+    public void addPet(Pet pet){
+        pets.add(pet);
+    }
 }
