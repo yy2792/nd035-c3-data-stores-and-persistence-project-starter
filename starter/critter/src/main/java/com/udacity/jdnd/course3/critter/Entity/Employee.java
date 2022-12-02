@@ -22,6 +22,6 @@ public class Employee {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> daysAvailable;
-    @ManyToMany(mappedBy="employees")
-    private Set<Schedule> schedules;
+    @ManyToMany(mappedBy="employeeList")
+    private Set<Schedule> employeeSchedules;
 }
