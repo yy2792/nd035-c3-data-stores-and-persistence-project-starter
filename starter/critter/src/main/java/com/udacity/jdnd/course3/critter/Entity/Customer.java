@@ -11,7 +11,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String phone;
+    private String phoneNumber;
     @Nationalized
     private String name;
     @Nationalized
