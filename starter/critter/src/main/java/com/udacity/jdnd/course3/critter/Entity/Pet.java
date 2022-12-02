@@ -1,4 +1,4 @@
-package com.udacity.jdnd.course3.critter.model;
+package com.udacity.jdnd.course3.critter.Entity;
 
 import com.udacity.jdnd.course3.critter.pet.PetType;
 import lombok.Data;
