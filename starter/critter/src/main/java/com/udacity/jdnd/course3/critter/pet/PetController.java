@@ -31,7 +31,8 @@ public class PetController {
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         try {
             Pet pet = petService.convertPetDTOToEntity(petDTO);
-            petService.savePet(pet);
+            pet = petService.savePet(pet);
+            petDTO = petService.convertEntityToPetDTO(pet);
             return petDTO;
         }
         catch (CustomerNotFoundError e) {
