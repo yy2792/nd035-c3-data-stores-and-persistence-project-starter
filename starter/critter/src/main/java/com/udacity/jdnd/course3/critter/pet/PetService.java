@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,10 @@ public class PetService {
     public Pet getPetById(Long id) {
         return petRepository.findById(id).orElseThrow(() ->
                 new PetNotFoundError("Pet " + id.toString() + " not found"));
+    }
+
+    public List<Pet> getAllPets() {
+        return (List<Pet>) petRepository.findAll();
     }
 
     public PetDTO convertEntityToPetDTO(Pet pet) {
