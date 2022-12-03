@@ -52,8 +52,14 @@ public class ScheduleController {
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-
-        throw new UnsupportedOperationException();
+        try {
+            List<Schedule> schedules = scheduleService.findScheduleByPetId(petId);
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            schedules.forEach(schedule -> scheduleDTOs.add(scheduleService.convertEntityToScheduleDTO(schedule)));
+            return scheduleDTOs;
+        } catch (CustomerNotFoundError | PetNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @GetMapping("/employee/{employeeId}")
