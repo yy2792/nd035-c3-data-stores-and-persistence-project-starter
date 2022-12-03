@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.Entity.Pet;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
+import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.user.CustomerService;
@@ -42,7 +43,13 @@ public class PetController {
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+        try {
+            Pet pet = petService.getPetById(petId);
+            return petService.convertEntityToPetDTO(pet);
+        }
+        catch (PetNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @GetMapping
