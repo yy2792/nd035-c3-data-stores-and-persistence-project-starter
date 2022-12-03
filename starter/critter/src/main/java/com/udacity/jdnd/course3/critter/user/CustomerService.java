@@ -31,6 +31,10 @@ public class CustomerService {
         return customer;
     }
 
+    public List<Customer> getAllCustomers() {
+        return (List<Customer>) customerRepository.findAll();
+    }
+
     public CustomerDTO convertEntityToCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
