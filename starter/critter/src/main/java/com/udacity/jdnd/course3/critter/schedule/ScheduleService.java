@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -34,6 +35,20 @@ public class ScheduleService {
     public Schedule save(Schedule schedule) {
         schedule = scheduleRepository.save(schedule);
         return schedule;
+    }
+
+    public List<Schedule> getAllSchedules() {
+        return (List<Schedule>) scheduleRepository.findAll();
+    }
+
+    public List<Schedule> findScheduleByPetId(long petId) {
+        Optional<Pet> pet = petRepository.findById(petId);
+        if (pet.isPresent()) {
+            return scheduleRepository.findAllByPetsContaining(pet.get());
+        }
+        else {
+            throw new PetNotFoundError("Pet " + String.valueOf(petId) + " not found!");
+        }
     }
 
     public ScheduleDTO convertEntityToScheduleDTO(Schedule schedule) {
