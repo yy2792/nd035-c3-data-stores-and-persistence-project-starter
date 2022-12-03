@@ -36,7 +36,7 @@ public class ScheduleService {
         return schedule;
     }
 
-    private ScheduleDTO convertEntityToScheduleDTO(Schedule schedule) {
+    public ScheduleDTO convertEntityToScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(schedule, scheduleDTO);
         if (schedule.getPetList() != null) {
