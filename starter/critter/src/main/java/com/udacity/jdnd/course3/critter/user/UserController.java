@@ -53,7 +53,6 @@ public class UserController {
                 PetNotFoundError e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
-
     }
 
     @GetMapping("/customer/pet/{petId}")
