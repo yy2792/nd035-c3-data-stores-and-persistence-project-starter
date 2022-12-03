@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,11 +40,19 @@ public class ScheduleController {
 
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {
-        throw new UnsupportedOperationException();
+        try {
+            List<Schedule> schedules = scheduleService.getAllSchedules();
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            schedules.forEach(schedule -> scheduleDTOs.add(scheduleService.convertEntityToScheduleDTO(schedule)));
+            return scheduleDTOs;
+        } catch (CustomerNotFoundError | PetNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
+
         throw new UnsupportedOperationException();
     }
 
