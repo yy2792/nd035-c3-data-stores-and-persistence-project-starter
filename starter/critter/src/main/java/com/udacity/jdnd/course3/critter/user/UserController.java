@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +43,17 @@ public class UserController {
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers() {
-        throw new UnsupportedOperationException();
+        try {
+            List<Customer> customerList = customerService.getAllCustomers();
+            List<CustomerDTO> customerDTOList = new ArrayList<>();
+            customerList.forEach(customer -> customerDTOList.add(
+                            customerService.convertEntityToCustomerDTO(customer)));
+            return customerDTOList;
+        }catch (
+                PetNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+
     }
 
     @GetMapping("/customer/pet/{petId}")
