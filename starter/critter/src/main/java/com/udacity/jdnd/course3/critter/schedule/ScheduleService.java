@@ -99,6 +99,7 @@ public class ScheduleService {
             scheduleDTO.getPetIds().forEach(petId -> pets.add(petRepository.findById(petId).
                     orElseThrow(() -> new PetNotFoundError(
                             "Pet " + String.valueOf(String.valueOf(petId) + "not found!")))));
+            schedule.setPetList(pets);
         }
 
         if (scheduleDTO.getEmployeeIds() != null) {
@@ -106,6 +107,7 @@ public class ScheduleService {
             scheduleDTO.getEmployeeIds().forEach(employeeId -> employees.add(employeeRepository.findById(employeeId).
                             orElseThrow(() -> new CustomerNotFoundError(
                                     "Owner" + String.valueOf(String.valueOf(employeeId) + "not found!")))));
+            schedule.setEmployeeList(employees);
         }
         return schedule;
     }
