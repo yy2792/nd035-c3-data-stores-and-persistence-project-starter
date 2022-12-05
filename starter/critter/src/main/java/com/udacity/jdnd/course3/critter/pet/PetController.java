@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles web requests related to Pets.
@@ -70,7 +71,19 @@ public class PetController {
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        throw new UnsupportedOperationException();
+        try {
+            Customer owner = customerService.getCustomerById(ownerId);
+            List<Pet> pets = petService.getPetsByCustomer(owner);
+
+            List<PetDTO> petDTOList = new ArrayList<>();
+            pets.forEach(pet -> petDTOList.add(
+                    petService.convertEntityToPetDTO(pet)));
+
+            return petDTOList;
+
+        } catch (PetNotFoundError | CustomerNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
 }
