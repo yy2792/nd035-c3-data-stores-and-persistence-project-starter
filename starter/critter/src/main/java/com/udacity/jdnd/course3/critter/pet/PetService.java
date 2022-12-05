@@ -40,6 +40,11 @@ public class PetService {
                 new PetNotFoundError("Pet " + id.toString() + " not found"));
     }
 
+    public Customer getOwnerByPetId(Long petId){
+        Pet pet = getPetById(petId);
+        return pet.getCustomer();
+    }
+
     public List<Pet> getAllPets() {
         return (List<Pet>) petRepository.findAll();
     }
