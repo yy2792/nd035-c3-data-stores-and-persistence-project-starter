@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.Entity.Customer;
+import com.udacity.jdnd.course3.critter.Entity.Employee;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,11 @@ import java.util.Set;
 public class UserController {
 
     private final CustomerService customerService;
+    private final EmployeeService employeeService;
 
-    public UserController(CustomerService customerService) {
+    public UserController(CustomerService customerService, EmployeeService employeeService) {
         this.customerService = customerService;
+        this.employeeService = employeeService;
     }
 
     @PostMapping("/customer")
@@ -62,7 +65,14 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        try {
+            Employee employee = employeeService.convertEmployeeDTOToEntity(employeeDTO);
+            employee = employeeService.saveEmployee(employee);
+            employeeDTO = employeeService.convertEntityToEmployeeDTO(employee);
+            return employeeDTO;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @PostMapping("/employee/{employeeId}")
