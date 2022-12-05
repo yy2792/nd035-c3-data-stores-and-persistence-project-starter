@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.Entity;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -20,6 +21,9 @@ public class Customer {
     private List<Pet> pets;
 
     public void addPet(Pet pet){
+        if(pets == null){
+            pets = new ArrayList<>();
+        }
         pets.add(pet);
     }
 }
