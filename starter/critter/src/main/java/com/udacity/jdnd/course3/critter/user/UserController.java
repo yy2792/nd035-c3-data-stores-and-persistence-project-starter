@@ -2,9 +2,11 @@ package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.Entity.Customer;
 import com.udacity.jdnd.course3.critter.Entity.Employee;
+import com.udacity.jdnd.course3.critter.Entity.Pet;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.EmployeeNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
+import com.udacity.jdnd.course3.critter.pet.PetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,10 +28,12 @@ public class UserController {
 
     private final CustomerService customerService;
     private final EmployeeService employeeService;
+    private final PetService petService;
 
-    public UserController(CustomerService customerService, EmployeeService employeeService) {
+    public UserController(CustomerService customerService, EmployeeService employeeService, PetService petService) {
         this.customerService = customerService;
         this.employeeService = employeeService;
+        this.petService = petService;
     }
 
     @PostMapping("/customer")
@@ -61,7 +65,13 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+        try {
+            Customer customer = petService.getOwnerByPetId(petId);
+            CustomerDTO customerDTO = customerService.convertEntityToCustomerDTO(customer);
+            return customerDTO;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @PostMapping("/employee")
