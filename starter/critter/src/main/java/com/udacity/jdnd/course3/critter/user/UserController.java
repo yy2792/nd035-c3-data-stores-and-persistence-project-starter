@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.user;
 import com.udacity.jdnd.course3.critter.Entity.Customer;
 import com.udacity.jdnd.course3.critter.Entity.Employee;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
+import com.udacity.jdnd.course3.critter.Error.EmployeeNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +78,13 @@ public class UserController {
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        try {
+            Employee employee = employeeService.findById(employeeId);
+            EmployeeDTO employeeDTO = employeeService.convertEntityToEmployeeDTO(employee);
+            return employeeDTO;
+        } catch (EmployeeNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @PutMapping("/employee/{employeeId}")
