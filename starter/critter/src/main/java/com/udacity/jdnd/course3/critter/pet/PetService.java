@@ -32,6 +32,11 @@ public class PetService {
 
     public Pet savePet(Pet pet) {
         pet = petRepository.save(pet);
+        Customer customer= pet.getCustomer();
+        if(customer!=null){
+            customer.addPet(pet);
+            customerRepository.save(customer);
+        }
         return pet;
     }
 
