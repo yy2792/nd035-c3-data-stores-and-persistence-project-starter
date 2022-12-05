@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.schedule;
 import com.udacity.jdnd.course3.critter.Entity.Pet;
 import com.udacity.jdnd.course3.critter.Entity.Schedule;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
+import com.udacity.jdnd.course3.critter.Error.EmployeeNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import com.udacity.jdnd.course3.critter.pet.PetService;
 import com.udacity.jdnd.course3.critter.user.CustomerService;
@@ -64,11 +65,25 @@ public class ScheduleController {
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        try {
+            List<Schedule> schedules = scheduleService.findSchedulesForEmployee(employeeId);
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            schedules.forEach(schedule -> scheduleDTOs.add(scheduleService.convertEntityToScheduleDTO(schedule)));
+            return scheduleDTOs;
+        } catch (EmployeeNotFoundError | CustomerNotFoundError | PetNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        throw new UnsupportedOperationException();
+        try {
+            List<Schedule> schedules = scheduleService.findScheduleForCustomer(customerId);
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            schedules.forEach(schedule -> scheduleDTOs.add(scheduleService.convertEntityToScheduleDTO(schedule)));
+            return scheduleDTOs;
+        } catch (EmployeeNotFoundError | CustomerNotFoundError | PetNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 }
