@@ -35,6 +35,11 @@ public class CustomerService {
         return (List<Customer>) customerRepository.findAll();
     }
 
+    public Customer getCustomerById(Long id) {
+        return customerRepository.findById(id).orElseThrow(() ->
+                new PetNotFoundError("Customer " + id.toString() + " not found"));
+    }
+
     public CustomerDTO convertEntityToCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
