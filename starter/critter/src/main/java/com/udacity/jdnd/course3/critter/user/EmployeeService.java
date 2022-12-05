@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.user;
 import com.udacity.jdnd.course3.critter.Entity.Customer;
 import com.udacity.jdnd.course3.critter.Entity.Employee;
 import com.udacity.jdnd.course3.critter.Entity.Pet;
+import com.udacity.jdnd.course3.critter.Error.EmployeeNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
@@ -26,6 +27,11 @@ public class EmployeeService {
     public EmployeeService(PetRepository repository, EmployeeRepository employeeRepository) {
         this.petRepository = repository;
         this.employeeRepository = employeeRepository;
+    }
+
+    public Employee findById(Long id) {
+        return employeeRepository.findById(id).orElseThrow(() ->
+                new EmployeeNotFoundError("Employee " + id.toString() + " not found"));
     }
 
     public Employee saveEmployee(Employee employee) {
