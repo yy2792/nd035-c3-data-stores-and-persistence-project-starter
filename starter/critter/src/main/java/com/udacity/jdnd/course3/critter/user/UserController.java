@@ -89,12 +89,25 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        try {
+            employeeService.setEmployeeAvailability(daysAvailable, employeeId);
+        } catch (EmployeeNotFoundError e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @GetMapping("/employee/availability")
-    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
+        try {
+            List<Employee> employees = employeeService.findEmployeesAvailableAndQualified(
+                    employeeRequestDTO.getDate(), employeeRequestDTO.getSkills());
+            List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+            employees.forEach(employee -> employeeDTOList.add(
+                    employeeService.convertEntityToEmployeeDTO(employee)));
+            return employeeDTOList;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
 }
