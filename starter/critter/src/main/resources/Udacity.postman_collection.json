@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3da4eeec-6238-471f-ab55-ce0d742fa76e",
+		"_postman_id": "2abe138e-8d35-4d25-961c-0da50f2b340f",
 		"name": "Udacity",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15788490"
 	},
 	"item": [
 		{
@@ -109,6 +110,14 @@
 						"employee"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Schedule",
+			"request": {
+				"method": "POST",
+				"header": []
 			},
 			"response": []
 		},
@@ -505,6 +514,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
