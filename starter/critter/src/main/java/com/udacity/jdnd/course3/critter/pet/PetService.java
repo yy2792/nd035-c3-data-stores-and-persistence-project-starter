@@ -44,6 +44,10 @@ public class PetService {
         return (List<Pet>) petRepository.findAll();
     }
 
+    public List<Pet> getPetsByCustomer(Customer customer) {
+        return (List<Pet>) petRepository.getPetsByCustomer(customer);
+    }
+
     public PetDTO convertEntityToPetDTO(Pet pet) {
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO);
