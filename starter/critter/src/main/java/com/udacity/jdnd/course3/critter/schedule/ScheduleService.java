@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.Entity.Customer;
 import com.udacity.jdnd.course3.critter.Entity.Employee;
 import com.udacity.jdnd.course3.critter.Entity.Pet;
 import com.udacity.jdnd.course3.critter.Entity.Schedule;
@@ -7,6 +8,7 @@ import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.EmployeeNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
+import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.repository.ScheduleRepository;
@@ -26,11 +28,14 @@ public class ScheduleService {
     private final EmployeeRepository employeeRepository;
     @Autowired
     private final PetRepository petRepository;
+    @Autowired
+    private final CustomerRepository customerRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, EmployeeRepository employeeRepository, PetRepository petRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, EmployeeRepository employeeRepository, PetRepository petRepository, CustomerRepository customerRepository) {
         this.scheduleRepository = scheduleRepository;
         this.employeeRepository = employeeRepository;
         this.petRepository = petRepository;
+        this.customerRepository = customerRepository;
     }
 
     public Schedule save(Schedule schedule) {
@@ -58,6 +63,15 @@ public class ScheduleService {
             return scheduleRepository.findAllByEmployeeListContaining(employee.get());
         }
         throw new EmployeeNotFoundError("Employee " + String.valueOf(employeeId) + " not found!");
+    }
+
+    public List<Schedule> findScheduleForCustomer(Long customerId){
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()){
+            List<Pet> pets = customer.get().getPets();
+            return scheduleRepository.findAllByPetListIn(pets);
+        }
+        throw new CustomerNotFoundError("customer " + String.valueOf(customerId) + " not found!");
     }
 
     public ScheduleDTO convertEntityToScheduleDTO(Schedule schedule) {
