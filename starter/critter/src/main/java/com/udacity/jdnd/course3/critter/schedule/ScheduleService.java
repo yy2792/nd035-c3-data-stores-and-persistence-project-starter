@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.Entity.Employee;
 import com.udacity.jdnd.course3.critter.Entity.Pet;
 import com.udacity.jdnd.course3.critter.Entity.Schedule;
 import com.udacity.jdnd.course3.critter.Error.CustomerNotFoundError;
+import com.udacity.jdnd.course3.critter.Error.EmployeeNotFoundError;
 import com.udacity.jdnd.course3.critter.Error.PetNotFoundError;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
@@ -44,11 +45,19 @@ public class ScheduleService {
     public List<Schedule> findScheduleByPetId(long petId) {
         Optional<Pet> pet = petRepository.findById(petId);
         if (pet.isPresent()) {
-            return scheduleRepository.findAllByPetsContaining(pet.get());
+            return scheduleRepository.findAllByPetListContaining(pet.get());
         }
         else {
             throw new PetNotFoundError("Pet " + String.valueOf(petId) + " not found!");
         }
+    }
+
+    public List<Schedule> findSchedulesForEmployee(Long employeeId){
+        Optional<Employee> employee = employeeRepository.findById(employeeId);
+        if(employee.isPresent()){
+            return scheduleRepository.findAllByEmployeeListContaining(employee.get());
+        }
+        throw new EmployeeNotFoundError("Employee " + String.valueOf(employeeId) + " not found!");
     }
 
     public ScheduleDTO convertEntityToScheduleDTO(Schedule schedule) {
